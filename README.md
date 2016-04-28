@@ -16,7 +16,7 @@ Data Structures Final Project
       In making a user list of ingrediants for analysis:
             Copy/paste the ingredient list of the cosmetic product of interest into a text file. Delete the period at the end of the list, and any other additional words/periods which are not ingredients or commas but leave all commas. Save that file in the same folder as this program and remember its name. As a command line argument, enter that name with its .txt extension.
             
-      Dependencies: no third-party libraries, everythign included
+      Dependencies: no third-party libraries, everything already included
       System Requirements: use on the vm
       Group Members: Meridith Richter
       Contributors: none so far
