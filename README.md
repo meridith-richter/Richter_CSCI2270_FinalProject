@@ -5,7 +5,7 @@ Data Structures Final Project
       
       INSTRUCTIONS:
       The following are all files used in this program:
-            1) main.cpp = driver program
+            1)main.cpp = driver program
             2)HashTable.h
             3)HashTable.cpp
             4)LinkedList.h
