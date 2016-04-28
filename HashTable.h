@@ -3,33 +3,9 @@
 #include <string>
 #include <vector>
 #include <string>
+#include "LinkedList.h"
 
 using namespace std;
-
-struct Ingredient{
-    string classification;
-    string name;
-    string product;
-    Ingredient *next;
-};
-
-class LinkedList{
-    private:
-        Ingredient * head;
-        int length;
-
-    public:
-        LinkedList();
-        //insert new at end of current list
-        void insertItem(Ingredient * newItem);
-        //true if success
-        bool removeItem(string itemName);
-        //return NULL if not found
-        Ingredient *getItem(string itemName);
-        void printList(int index);
-        int getLength();
-        ~LinkedList();
-};
 
 class HashTable{
     private:
@@ -42,8 +18,9 @@ class HashTable{
         void insertItem(Ingredient *newItem);
         bool removeItem(string itemName);
         //return NULL if not found
-        Ingredient * getItemByKey(string itemName);
+        Ingredient * getItemByName(string itemName);
         void printTable();
+        Ingredient *returnItem(int index);
         //histogram version of printing
         void printHistogram();
         int getLength();
