@@ -1,5 +1,6 @@
 #include <iostream>
 #include "LinkedList.h"
+#include "HashTable.h"
 
 
 using namespace std;
