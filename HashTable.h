@@ -13,14 +13,17 @@ class HashTable{
         int length;
 
     public:
+        string strArr[30];
         HashTable(int tableLength);
+        void setUpstrArr();
         int hash(string itemName);
         void insertItem(Ingredient *newItem);
         bool removeItem(string itemName);
         //return NULL if not found
-        Ingredient * getItemByName(string itemName);
+        Ingredient *getItemByName(string itemName);
         void printTable();
-        Ingredient *returnItem(int index);
+        Ingredient *getList(int index);
+        void compare(Ingredient *userHead, Ingredient *fileHead);
         //histogram version of printing
         void printHistogram();
         int getLength();
@@ -29,3 +32,5 @@ class HashTable{
     };
 
 #endif
+
+
