@@ -14,18 +14,22 @@ using namespace std;
 
 void printMenu(){
     cout<<"**************MENU**************"<<endl;
-    cout<<"1. Analyze cosmetic product ingredients"<<endl;
-    cout<<"2. Instructions"<<endl;
-    cout<<"3. Print histogram of your product's ingredient hash table"<<endl;
-    cout<<"4. Print histogram of bad ingredient hash table"<<endl;
-    cout<<"5. Print list of bad ingredients in compared list"<<endl;
-    cout<<"6. Quit"<<endl;
+    cout<<"1. Instructions"<<endl;
+    cout<<"2. Analyze your cosmetic product ingredients"<<endl;
+    cout<<"3. Print list of submitted product ingredients"<<endl;
+    cout<<"4. Print list of comparative bad ingredients"<<endl;
+    cout<<"5. Quit"<<endl;
 }
 
-int main(int argc, char *argv[]){
+//keep track of indexes used
+bool htboolArr[26] = {false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false};
+bool compHTboolArr[26] = {false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false};
 
+int main(int argc, char *argv[]){
+    //for user in
     int result;
 
+    //start menu
     printMenu();
 
     //check for first line in, without space in front of ingredient
@@ -34,32 +38,36 @@ int main(int argc, char *argv[]){
     //build user file hash table
     ifstream infile(argv[1]);
 
-    //initialize ingredient list
+    //initialize user-supplied ingredient list
     HashTable ht(26);
 
     //file open check
     if(!infile.is_open()){
-        cout<<"Your file did not successfully open"<<endl;
+        cout<<"Your file "<<argv[1]<<" did not successfully open"<<endl;
     }
     else{
         while(!infile.eof()){
             string line;
             getline(infile, line, ',');
             Ingredient *newIngredient = new Ingredient();
+            int boolResult2;
             //if first ingredient in, add space to make it even with others
             if(check == 0){
                 string space2add = " ";
                 line.insert(0, space2add);
                 newIngredient->name = line;
                 newIngredient->classification = line[1];
+                int boolResult2 = ht.hash(line);
+                htboolArr[boolResult2] = true;
                 ht.insertItem(newIngredient);
             }
             //if rest of ingredients, no adjustment
             else{
                 newIngredient->name = line;
                 newIngredient->classification = line[1];
+                boolResult2 = ht.hash(line);
+                htboolArr[boolResult2] = true;
                 ht.insertItem(newIngredient);
-                //cout<<line<<endl;
             }
             check++;
         }
@@ -83,71 +91,77 @@ int main(int argc, char *argv[]){
                 getline(myfile, line, ',');
                 Ingredient *newIngredient = new Ingredient();
                 //if first ingredient in, add space to make it even with others
+                int boolResult;
                 if(check == 0){
                     string space2add = " ";
                     line.insert(0, space2add);
                     newIngredient->name = line;
                     newIngredient->classification = line[1];
+                    boolResult = ht.hash(line);
+                    compHTboolArr[boolResult] = true;
                     compHT.insertItem(newIngredient);
                 }
                 //if rest of ingredients, no adjustment
                 else{
                     newIngredient->name = line;
                     newIngredient->classification = line[1];
+                    boolResult = ht.hash(line);
+                    compHTboolArr[boolResult] = true;
                     compHT.insertItem(newIngredient);
-                    //cout<<line<<endl;
                 }
                 check++;
             }
 
 
             //main program implementation
-            while(result != 6){
+            while(result != 5){
 
                 cin>>result;
 
-                //search through pasted ingredients to find troublesome ones
-                if(result == 1){
-                    cin.ignore();
-                    //call compare function for each item
-                    for(int i = 0; i < 26; i++){
-                       Ingredient *item = ht.returnItem(i + 1);
-                       cout<<item->name<<endl;
-                    }
-
-                    printMenu();
-                }
                 //instructions
-                if(result == 2){
+                if(result == 1){
                     cin.ignore();
                     cout<<endl;
                     cout<<"**********INSTRUCTIONS**********"<<endl;
                     cout<<"Copy/paste the ingredient list of the cosmetic\nproduct of interest into a text file.\nDelete the period at the end of the list,\nand any other additional words/periods which are not ingredients or commas\nbut leave all commas. Save that file in the same\nfolder as this program and remember its name.\nAs a command line argument, enter that name with its .txt extension."<<endl;
                     cout<<endl;
+                    string getridofcin;
                     printMenu();
                 }
-                //print histogram of ingredient list
+                //search through submitted ingredients to find troublesome ones, compare to bad ingredient list
+                if(result == 2){
+                    cin.ignore();
+                    //ht.printHistogram();
+                    //compHT.printHistogram();
+                    for(int i = 0; i < 26; i++){
+                        if(htboolArr[i] == true && compHTboolArr[i] == true){
+                            Ingredient *htHead = ht.getList(i);
+                            //cout<<"head for your list"<<htHead->name<<endl;
+                            Ingredient *compHead = compHT.getList(i);
+                            //cout<<"head for bad list"<<compHead->name<<endl;
+                            ht.compare(htHead, compHead);
+                        }
+                    }
+                    printMenu();
+
+                }
                 else if(result == 3){
                     cin.ignore();
-                    ht.printHistogram();
-                    printMenu();
-                }
-                //print histogram of bad ingredient list
-                else if(result == 4){
-                    cin.ignore();
-                    compHT.printHistogram();
+                    cout<<"Submitted Ingredient Table Contains:"<<endl;
+                    ht.printTable();
+                    cout<<"Table Contains "<<ht.getNumberOfItems()<<" ingredients."<<endl;
                     printMenu();
                 }
                 //print list of bad ingredients
-                                //print histogram of bad ingredient list
-                else if(result == 5){
+                else if(result == 4){
                     cin.ignore();
                     cout<<"Bad Ingredient Table Contains:"<<endl;
                     compHT.printTable();
+                    cout<<"Table Contains "<<compHT.getNumberOfItems()<<" ingredients."<<endl;
                     printMenu();
                 }
                 //quit
-                else if(result == 6){
+                else if(result == 5){
                     cin.ignore();
                     cout<<"Thank you, goodbye!"<<endl;
                     ht.~HashTable();
