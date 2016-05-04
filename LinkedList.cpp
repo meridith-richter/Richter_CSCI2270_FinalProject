@@ -53,8 +53,9 @@ Ingredient *LinkedList::getItem(string itemName){
     Ingredient *cursor = head;
     while(cursor){
         temp = cursor;
-        if((temp != head) && (temp->name == itemName))
+        if((temp != head) && (temp->name == itemName)){
             return temp;
+        }
         cursor = temp->next;
     }
     return NULL;
@@ -71,9 +72,18 @@ void LinkedList::printList(int index){
         cursor = temp->next;
     }
 }
-string LinkedList::returnHead(){
-    Ingredient *temp = head->next;
-    return temp->name;
+
+Ingredient *LinkedList::returnHead(int index){
+    Ingredient *temp = head;
+    Ingredient *cursor = head;
+    while(cursor){
+        temp = cursor;
+        if(temp != head){
+            //cout<<temp->name<<endl;
+            return temp;
+        }
+        cursor = temp->next;
+    }
 }
 
 void LinkedList::histogramPrintList(int index){
@@ -103,3 +113,4 @@ LinkedList::~LinkedList(){
         }
     }
 }
+
