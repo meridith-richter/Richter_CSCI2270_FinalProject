@@ -26,10 +26,11 @@ class LinkedList{
         //return NULL if not found
         Ingredient *getItem(string itemName);
         void printList(int index);
-        string returnHead();
+        Ingredient *returnHead(int index);
         void histogramPrintList(int index);
         int getLength();
         ~LinkedList();
 };
 
 #endif // LINKEDLIST_H
+
